@@ -17,6 +17,7 @@ import 'course_catalog_screen.dart';
 import '../utils/sync_disclaimer.dart';
 import '../utils/building_time_override.dart';
 import '../utils/screen_breakpoints.dart';
+import '../widgets/study_type_badge.dart';
 import 'package:mysues/l10n/localized_formatters.dart';
 import 'package:mysues/l10n/l10n.dart';
 
@@ -1862,25 +1863,10 @@ class ScheduleScreenState extends State<ScheduleScreen> {
                               ),
                               textAlign: TextAlign.center,
                             ),
-                          if (course.studyType == CourseStudyType.retake)
-                            Text(
-                              context.l10n.retake,
-                              style: TextStyle(
-                                color: Colors.red.withValues(alpha: 0.8),
-                                fontSize: 9,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          if (course.studyType == CourseStudyType.exempt)
-                            Text(
-                              context.l10n.attendanceExempt,
-                              style: TextStyle(
-                                color: Colors.green.withValues(alpha: 0.8),
-                                fontSize: 9,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              textAlign: TextAlign.center,
+                          if (course.studyType != CourseStudyType.normal)
+                            StudyTypeBadge(
+                              studyType: course.studyType,
+                              fontSize: 9,
                             ),
                           Text(
                             course.courseName,
