@@ -30,10 +30,7 @@ class IcsExporter {
     final box = context.findRenderObject() as RenderBox?;
     final rect = box != null ? box.localToGlobal(Offset.zero) & box.size : null;
 
-    await Share.shareXFiles(
-      [XFile(file.path)],
-      sharePositionOrigin: rect,
-    );
+    await Share.shareXFiles([XFile(file.path)], sharePositionOrigin: rect);
   }
 
   /// 针对一组课程生成完整的 ICS 文件字符串
@@ -67,13 +64,20 @@ class IcsExporter {
     writeLine('END:VTIMEZONE');
 
     final DateFormat icsDateFormat = DateFormat("yyyyMMdd'T'HHmmss");
+    final DateFormat icsDateOnlyFormat = DateFormat('yyyyMMdd');
     final String nowUtcStr = icsDateFormat.format(DateTime.now().toUtc());
     final String nowStr = '${nowUtcStr}Z';
 
-    // 找出当学期第一周的周一
-    // weekday 1~7 (1 = Mon)
-    final startMonday = currentTable.startDateObj.subtract(
-      Duration(days: currentTable.startDateObj.weekday - 1),
+    // Normalize the calendar date to UTC before doing date-only arithmetic.
+    // This prevents DST transitions in the device timezone from shifting dates.
+    final startDate = currentTable.startDateObj;
+    final normalizedStartDate = DateTime.utc(
+      startDate.year,
+      startDate.month,
+      startDate.day,
+    );
+    final startMonday = normalizedStartDate.subtract(
+      Duration(days: normalizedStartDate.weekday - 1),
     );
 
     for (var course in courses) {
@@ -85,6 +89,7 @@ class IcsExporter {
         // 计算目标日期：开学周一 + (第几周 - 1)*7天 + 星期几-1天
         final daysOffset = (week - 1) * 7 + (course.day - 1);
         final targetDate = startMonday.add(Duration(days: daysOffset));
+        final eventDate = icsDateOnlyFormat.format(targetDate);
 
         // 查找首尾上课时间点
         final startHm = _getCourseStartTime(course, timeDetails);
@@ -128,7 +133,7 @@ class IcsExporter {
         writeLine('DESCRIPTION:${_escapeText(description)}');
         writeLine(
           'UID:mysues_course_${course.id}_week${week}_'
-          '${targetDate.millisecondsSinceEpoch}@mysues.app',
+          '$eventDate@mysues.app',
         );
         writeLine('END:VEVENT');
       }
@@ -170,7 +175,10 @@ class IcsExporter {
     buffer.write('\r\n');
   }
 
-  static String _getCourseStartTime(Course course, List<TimeDetail> timeDetails) {
+  static String _getCourseStartTime(
+    Course course,
+    List<TimeDetail> timeDetails,
+  ) {
     if (course.startTime != null && course.startTime!.isNotEmpty) {
       return course.startTime!;
     }
