@@ -1,8 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
+
 import '../models/course.dart';
 import '../models/schedule_table.dart';
 import '../models/time_table.dart';
@@ -12,17 +15,17 @@ class IcsExporter {
   /// 导出并分享一份或多份课程的 ICS 日历文件
   static Future<void> exportCourses(
     BuildContext context,
-    List<Course> courses, 
-    ScheduleTable currentTable, 
-    List<TimeDetail> timeDetails, 
-    {String fileName = 'mysues_schedule.ics'}
-  ) async {
+    List<Course> courses,
+    ScheduleTable currentTable,
+    List<TimeDetail> timeDetails, {
+    String fileName = 'mysues_schedule.ics',
+  }) async {
     final icsString = generateIcsString(courses, currentTable, timeDetails);
-    
+
     final tempDir = await getTemporaryDirectory();
     final file = File('${tempDir.path}/$fileName');
     await file.writeAsString(icsString);
-    
+
     // Provide sharePositionOrigin for iPad support
     final box = context.findRenderObject() as RenderBox?;
     final rect = box != null ? box.localToGlobal(Offset.zero) & box.size : null;
@@ -35,23 +38,38 @@ class IcsExporter {
 
   /// 针对一组课程生成完整的 ICS 文件字符串
   static String generateIcsString(
-    List<Course> courses, 
-    ScheduleTable currentTable, 
-    List<TimeDetail> timeDetails
+    List<Course> courses,
+    ScheduleTable currentTable,
+    List<TimeDetail> timeDetails,
   ) {
     final buffer = StringBuffer();
-    buffer.writeln('BEGIN:VCALENDAR');
-    buffer.writeln('VERSION:2.0');
-    buffer.writeln('PRODID:-//MySUES//Calendar Planner//ZH_CN');
-    buffer.writeln('CALSCALE:GREGORIAN');
-    buffer.writeln('METHOD:PUBLISH');
-    buffer.writeln('X-WR-CALNAME:MySUES 课程表');
-    buffer.writeln('X-WR-TIMEZONE:Asia/Shanghai');
-    
+    void writeLine(String line) => _writeContentLine(buffer, line);
+
+    writeLine('BEGIN:VCALENDAR');
+    writeLine('VERSION:2.0');
+    writeLine('PRODID:-//MySUES//Calendar Planner//ZH_CN');
+    writeLine('CALSCALE:GREGORIAN');
+    writeLine('METHOD:PUBLISH');
+    writeLine('X-WR-CALNAME:MySUES 课程表');
+    writeLine('X-WR-TIMEZONE:Asia/Shanghai');
+
+    // RFC 5545 does not allow a numeric UTC offset directly on DTSTART/DTEND.
+    // Define the fixed UTC+08:00 timezone and reference it with TZID instead.
+    writeLine('BEGIN:VTIMEZONE');
+    writeLine('TZID:Asia/Shanghai');
+    writeLine('X-LIC-LOCATION:Asia/Shanghai');
+    writeLine('BEGIN:STANDARD');
+    writeLine('DTSTART:19700101T000000');
+    writeLine('TZOFFSETFROM:+0800');
+    writeLine('TZOFFSETTO:+0800');
+    writeLine('TZNAME:CST');
+    writeLine('END:STANDARD');
+    writeLine('END:VTIMEZONE');
+
     final DateFormat icsDateFormat = DateFormat("yyyyMMdd'T'HHmmss");
     final String nowUtcStr = icsDateFormat.format(DateTime.now().toUtc());
     final String nowStr = '${nowUtcStr}Z';
-    
+
     // 找出当学期第一周的周一
     // weekday 1~7 (1 = Mon)
     final startMonday = currentTable.startDateObj.subtract(
@@ -63,49 +81,93 @@ class IcsExporter {
 
       for (int week = 1; week <= currentTable.maxWeek; week++) {
         if (!course.inWeek(week)) continue;
-        
+
         // 计算目标日期：开学周一 + (第几周 - 1)*7天 + 星期几-1天
         final daysOffset = (week - 1) * 7 + (course.day - 1);
         final targetDate = startMonday.add(Duration(days: daysOffset));
-        
+
         // 查找首尾上课时间点
-        String startHm = _getCourseStartTime(course, timeDetails);
-        String endHm = _getCourseEndTime(course, timeDetails);
-        
+        final startHm = _getCourseStartTime(course, timeDetails);
+        final endHm = _getCourseEndTime(course, timeDetails);
+
         final startParts = startHm.split(':');
         final courseStart = DateTime(
-          targetDate.year, targetDate.month, targetDate.day, 
-          int.parse(startParts[0]), int.parse(startParts[1])
+          targetDate.year,
+          targetDate.month,
+          targetDate.day,
+          int.parse(startParts[0]),
+          int.parse(startParts[1]),
         );
 
         final endParts = endHm.split(':');
         final courseEnd = DateTime(
-          targetDate.year, targetDate.month, targetDate.day, 
-          int.parse(endParts[0]), int.parse(endParts[1])
+          targetDate.year,
+          targetDate.month,
+          targetDate.day,
+          int.parse(endParts[0]),
+          int.parse(endParts[1]),
         );
-        
-        // 转换为 UTC 用于 ICS
-        final startUtc = courseStart.toUtc();
-        final endUtc = courseEnd.toUtc();
 
-        buffer.writeln('BEGIN:VEVENT');
-        buffer.writeln('DTSTAMP:$nowStr');
-        buffer.writeln('DTSTART:${icsDateFormat.format(startUtc)}Z');
-        buffer.writeln('DTEND:${icsDateFormat.format(endUtc)}Z');
-        buffer.writeln('SUMMARY:${course.courseName}');
+        writeLine('BEGIN:VEVENT');
+        writeLine('DTSTAMP:$nowStr');
+        writeLine(
+          'DTSTART;TZID=Asia/Shanghai:${icsDateFormat.format(courseStart)}',
+        );
+        writeLine(
+          'DTEND;TZID=Asia/Shanghai:${icsDateFormat.format(courseEnd)}',
+        );
+        writeLine('SUMMARY:${_escapeText(course.courseName)}');
         if (course.room.isNotEmpty) {
-          buffer.writeln('LOCATION:${course.room}');
+          writeLine('LOCATION:${_escapeText(course.room)}');
         }
-        
-        String description = '教师: ${course.teacher.isNotEmpty ? course.teacher : '未知'}\\n节次: 第${course.startNode} - ${course.startNode + course.step - 1}节';
-        buffer.writeln('DESCRIPTION:$description');
-        buffer.writeln('UID:mysues_course_${course.id}_week${week}_${targetDate.millisecondsSinceEpoch}@mysues.app');
-        buffer.writeln('END:VEVENT');
+
+        final description =
+            '教师: ${course.teacher.isNotEmpty ? course.teacher : '未知'}\n'
+            '节次: 第${course.startNode} - '
+            '${course.startNode + course.step - 1}节';
+        writeLine('DESCRIPTION:${_escapeText(description)}');
+        writeLine(
+          'UID:mysues_course_${course.id}_week${week}_'
+          '${targetDate.millisecondsSinceEpoch}@mysues.app',
+        );
+        writeLine('END:VEVENT');
       }
     }
 
-    buffer.writeln('END:VCALENDAR');
+    writeLine('END:VCALENDAR');
     return buffer.toString();
+  }
+
+  /// Escapes values whose RFC 5545 value type is TEXT.
+  static String _escapeText(String value) {
+    return value
+        .replaceAll('\\', '\\\\')
+        .replaceAll('\r\n', '\\n')
+        .replaceAll('\r', '\\n')
+        .replaceAll('\n', '\\n')
+        .replaceAll(';', '\\;')
+        .replaceAll(',', '\\,');
+  }
+
+  /// Writes one RFC 5545 content line using CRLF and UTF-8-aware folding.
+  static void _writeContentLine(StringBuffer buffer, String line) {
+    const maxOctets = 75;
+    var octetsOnLine = 0;
+
+    for (final rune in line.runes) {
+      final character = String.fromCharCode(rune);
+      final characterOctets = utf8.encode(character).length;
+
+      if (octetsOnLine + characterOctets > maxOctets) {
+        buffer.write('\r\n ');
+        octetsOnLine = 1; // The folding whitespace is part of the new line.
+      }
+
+      buffer.write(character);
+      octetsOnLine += characterOctets;
+    }
+
+    buffer.write('\r\n');
   }
 
   static String _getCourseStartTime(Course course, List<TimeDetail> timeDetails) {
