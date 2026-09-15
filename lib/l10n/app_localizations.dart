@@ -523,18 +523,6 @@ abstract class AppLocalizations {
   /// **'我'**
   String get profile2;
 
-  /// No description provided for @attendanceExempt.
-  ///
-  /// In zh, this message translates to:
-  /// **'[免听]'**
-  String get attendanceExempt;
-
-  /// No description provided for @retake.
-  ///
-  /// In zh, this message translates to:
-  /// **'[重修]'**
-  String get retake;
-
   /// No description provided for @outsideThisWeek.
   ///
   /// In zh, this message translates to:
@@ -1392,6 +1380,18 @@ abstract class AppLocalizations {
   /// In zh, this message translates to:
   /// **'免听'**
   String get attendanceExempt2;
+
+  /// No description provided for @retakeShort.
+  ///
+  /// In zh, this message translates to:
+  /// **'重'**
+  String get retakeShort;
+
+  /// No description provided for @attendanceExemptShort.
+  ///
+  /// In zh, this message translates to:
+  /// **'免'**
+  String get attendanceExemptShort;
 
   /// No description provided for @editCourse.
   ///

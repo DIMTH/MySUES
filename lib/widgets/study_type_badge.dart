@@ -28,6 +28,11 @@ class StudyTypeBadge extends StatelessWidget {
       CourseStudyType.exempt => context.l10n.attendanceExempt2,
       CourseStudyType.normal => '',
     };
+    final shortLabel = switch (studyType) {
+      CourseStudyType.retake => context.l10n.retakeShort,
+      CourseStudyType.exempt => context.l10n.attendanceExemptShort,
+      CourseStudyType.normal => '',
+    };
     final textStyle = TextStyle(
       color: color,
       fontSize: fontSize,
@@ -49,11 +54,11 @@ class StudyTypeBadge extends StatelessWidget {
             : double.infinity;
         final displayLabel = textPainter.width <= availableTextWidth
             ? label
-            : String.fromCharCode(label.runes.first);
+            : shortLabel;
 
         return Semantics(
           label: label,
-          // 可见文本可能是回退后的单字符，避免读屏重复播报，只保留完整标签。
+          // 可见文本可能是回退后的短标签，避免读屏重复播报，只保留完整标签。
           excludeSemantics: true,
           child: Container(
             padding: const EdgeInsets.symmetric(

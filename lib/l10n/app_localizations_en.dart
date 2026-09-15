@@ -246,12 +246,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profile2 => 'Profile';
 
   @override
-  String get attendanceExempt => '[Attendance Exempt]';
-
-  @override
-  String get retake => '[Retake]';
-
-  @override
   String get outsideThisWeek => '[Outside This Week]';
 
   @override
@@ -699,6 +693,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get attendanceExempt2 => 'Attendance Exempt';
+
+  @override
+  String get retakeShort => 'RT';
+
+  @override
+  String get attendanceExemptShort => 'EX';
 
   @override
   String get editCourse => 'Edit Course';
