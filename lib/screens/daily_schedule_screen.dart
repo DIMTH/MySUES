@@ -16,6 +16,7 @@ import 'login_webview_screen.dart';
 import 'course_catalog_screen.dart';
 import '../utils/sync_disclaimer.dart';
 import '../utils/building_time_override.dart';
+import '../widgets/study_type_badge.dart';
 import 'package:mysues/l10n/localized_formatters.dart';
 import 'package:mysues/l10n/l10n.dart';
 
@@ -1346,23 +1347,10 @@ class DailyScheduleScreenState extends State<DailyScheduleScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            if (course.studyType == CourseStudyType.retake)
-                              Text(
-                                context.l10n.retake,
-                                style: TextStyle(
-                                  color: Colors.red.shade900,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            if (course.studyType == CourseStudyType.exempt)
-                              Text(
-                                context.l10n.attendanceExempt,
-                                style: TextStyle(
-                                  color: Colors.green.shade900,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            if (course.studyType != CourseStudyType.normal)
+                              StudyTypeBadge(
+                                studyType: course.studyType,
+                                fontSize: 10,
                               ),
                             Flexible(
                               child: Text(
