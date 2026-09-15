@@ -37,6 +37,7 @@ class StudyTypeBadge extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         const horizontalPadding = 1.0;
+        const borderWidth = 1.0;
         final textPainter = TextPainter(
           text: TextSpan(text: label, style: textStyle),
           maxLines: 1,
@@ -44,7 +45,7 @@ class StudyTypeBadge extends StatelessWidget {
           textScaler: MediaQuery.textScalerOf(context),
         )..layout();
         final availableTextWidth = constraints.hasBoundedWidth
-            ? constraints.maxWidth - horizontalPadding * 2
+            ? constraints.maxWidth - horizontalPadding * 2 - borderWidth * 2
             : double.infinity;
         final displayLabel = textPainter.width <= availableTextWidth
             ? label
@@ -52,6 +53,8 @@ class StudyTypeBadge extends StatelessWidget {
 
         return Semantics(
           label: label,
+          // 可见文本可能是回退后的单字符，避免读屏重复播报，只保留完整标签。
+          excludeSemantics: true,
           child: Container(
             padding: const EdgeInsets.symmetric(
               horizontal: horizontalPadding,
@@ -60,7 +63,7 @@ class StudyTypeBadge extends StatelessWidget {
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.surface,
               borderRadius: BorderRadius.circular(3),
-              border: Border.all(color: color),
+              border: Border.all(color: color, width: borderWidth),
             ),
             child: FittedBox(
               fit: BoxFit.scaleDown,
