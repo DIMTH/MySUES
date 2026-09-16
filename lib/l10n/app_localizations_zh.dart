@@ -240,12 +240,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get profile2 => '我';
 
   @override
-  String get attendanceExempt => '[免听]';
-
-  @override
-  String get retake => '[重修]';
-
-  @override
   String get outsideThisWeek => '[非本周]';
 
   @override
@@ -675,6 +669,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get attendanceExempt2 => '免听';
+
+  @override
+  String get retakeShort => '重';
+
+  @override
+  String get attendanceExemptShort => '免';
 
   @override
   String get editCourse => '编辑课程';
