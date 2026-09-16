@@ -10,11 +10,15 @@ My SUES is a campus life assistant app created by an independent developer. Desi
 
 ## ✨ Features
 
-- **📅 Schedule Query**: Check course schedules anytime, anywhere. Supports not only online educational administration system data synchronization but also provides an intuitive weekly view.
-- **📊 Grade Query**: Quickly query grades and GPA for each semester to keep track of learning progress.
-- **📝 Exam Information**: Check exam times and location arrangements, never miss an exam again.
-- **🎨 Personalization**: Supports Dark Mode and customizable appearance settings.
-- **🔒 Secure Login**: Built-in WebView for logging into the educational administration system, maintaining sessions via Cookie management, safe and convenient.
+My SUES is a free, ad-free, open-source course schedule app for students. It brings your schedule, grades and exam arrangements together in one clean, easy-to-use app.
+
+- **Schedule**: Switch between week and daily views; odd/even-week, attendance-exempt and retake courses are clearly marked. Multiple schedules, holiday adjustments and .ics export included.
+- **Grades & GPA**: Scores, credits and GPA summarised by semester, with semester and overall GPA calculated automatically.
+- **Exams**: Exam times and locations in one list, with reminders before each exam.
+- **Home screen widget**: See today's classes without opening the app.
+- **Class reminders**: A notification 15 minutes before each class.
+- **Personalisation**: Dark mode, custom appearance and a bilingual Chinese/English interface.
+- **Data & privacy**: Import your schedule, grades and exams from the academic system; data is stored locally and can be cleared at any time.
 
 ## 🛠️ Tech Stack
 
