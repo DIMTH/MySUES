@@ -11,6 +11,7 @@ MySUES follows [Semantic Versioning 2.0.0](http://semver.org/).
 - 🐛 Remove the iOS exit(0) in the consent gate, and add App Store submission metadata including export compliance and privacy manifests. @HsxMark
 - 🐛 Read the app version at runtime on the About screen instead of a hardcoded string. @HsxMark
 - 🛠 Update the sponsor acknowledgements and refresh the README introduction. @HsxMark
+- 🛠 Bump the build number to `2002` so stores see a versionCode above the live 1.2.0 (`2001`) and offer the upgrade. @HsxMark
 
 ## 1.2.0
 
