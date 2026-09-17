@@ -36,9 +36,9 @@ class _AboutScreenState extends State<AboutScreen> {
     setState(() => _versionLabel = _formatVersion(info));
   }
 
-  /// Only show the build number when it adds information. With no `+build`
-  /// suffix in pubspec.yaml, CFBundleVersion mirrors CFBundleShortVersionString,
-  /// so printing both would read "1.2.1 (1.2.1)".
+  /// Show the build number only when it adds information. If pubspec.yaml is
+  /// ever released without a `+build` suffix, iOS reports CFBundleVersion as
+  /// the version name itself, so printing both would read "1.2.1 (1.2.1)".
   static String _formatVersion(PackageInfo info) {
     final build = info.buildNumber;
     return build.isEmpty || build == info.version
