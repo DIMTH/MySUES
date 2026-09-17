@@ -278,6 +278,12 @@ abstract class AppLocalizations {
   /// **'不同意并退出'**
   String get disagreeAndExit;
 
+  /// No description provided for @disagreeExitHint.
+  ///
+  /// In zh, this message translates to:
+  /// **'使用三旋翼课程表需要先同意上述协议。如不同意，您可以自行关闭应用，我们不会保留任何数据。'**
+  String get disagreeExitHint;
+
   /// No description provided for @agreeAndContinue.
   ///
   /// In zh, this message translates to:

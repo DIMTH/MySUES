@@ -1,0 +1,8 @@
+// Build settings for the ScheduleWidget extension.
+//
+// The extension must report the same CFBundleShortVersionString and
+// CFBundleVersion as its containing app, otherwise App Store upload validation
+// fails (ITMS-90473 / ITMS-90474). This includes only Generated.xcconfig so the
+// widget picks up FLUTTER_BUILD_NAME / FLUTTER_BUILD_NUMBER without pulling in
+// the Runner's CocoaPods settings.
+#include "Generated.xcconfig"

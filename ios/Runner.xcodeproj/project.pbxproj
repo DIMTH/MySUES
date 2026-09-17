@@ -19,6 +19,7 @@
 		BFA2FE522F59F1470097ECCA /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA2FE512F59F1470097ECCA /* SwiftUI.framework */; };
 		BFA2FE632F59F1480097ECCA /* ScheduleWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = BFA2FE4E2F59F1470097ECCA /* ScheduleWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		CF000000000000000000001D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CF000000000000000000001C /* InfoPlist.strings */; };
+		CF000000000000000000002B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = CF000000000000000000002A /* PrivacyInfo.xcprivacy */; };
 		FC6FF200AD7511A30F0400BC /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C1E8F61CE2C03A3F8FD6C4 /* Pods_RunnerTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -94,6 +95,8 @@
 		C3C6AFBC4E19237DCE87CF62 /* Pods-RunnerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.release.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.release.xcconfig"; sourceTree = "<group>"; };
 		CF000000000000000000001A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		CF000000000000000000001B /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		CF000000000000000000002A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		CF000000000000000000002C /* Widget.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Widget.xcconfig; path = Flutter/Widget.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -189,6 +192,7 @@
 				9740EEB21CF90195004384FC /* Debug.xcconfig */,
 				7AFA3C8E1D35360C0083082E /* Release.xcconfig */,
 				9740EEB31CF90195004384FC /* Generated.xcconfig */,
+				CF000000000000000000002C /* Widget.xcconfig */,
 			);
 			name = Flutter;
 			sourceTree = "<group>";
@@ -222,6 +226,7 @@
 			children = (
 				BFA2FE6B2F59F1BC0097ECCA /* Runner.entitlements */,
 				CF000000000000000000001C /* InfoPlist.strings */,
+				CF000000000000000000002A /* PrivacyInfo.xcprivacy */,
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
 				97C146FD1CF9000F007C117D /* Assets.xcassets */,
 				97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */,
@@ -358,6 +363,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CF000000000000000000001D /* InfoPlist.strings in Resources */,
+				CF000000000000000000002B /* PrivacyInfo.xcprivacy in Resources */,
 				97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */,
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
@@ -823,6 +829,7 @@
 		};
 		BFA2FE652F59F1480097ECCA /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CF000000000000000000002C /* Widget.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -835,7 +842,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = ScheduleWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = J2VHR66TY8;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
@@ -850,7 +857,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = "$(FLUTTER_BUILD_NAME)";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hsxmark.mysues.ScheduleWidget;
@@ -869,6 +876,7 @@
 		};
 		BFA2FE662F59F1480097ECCA /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CF000000000000000000002C /* Widget.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -881,7 +889,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = ScheduleWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = J2VHR66TY8;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
@@ -896,7 +904,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = "$(FLUTTER_BUILD_NAME)";
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hsxmark.mysues.ScheduleWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -912,6 +920,7 @@
 		};
 		BFA2FE672F59F1480097ECCA /* Profile */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CF000000000000000000002C /* Widget.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -924,7 +933,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = ScheduleWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = J2VHR66TY8;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
@@ -939,7 +948,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = "$(FLUTTER_BUILD_NAME)";
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hsxmark.mysues.ScheduleWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";

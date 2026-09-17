@@ -46,6 +46,7 @@ class _AgreementDialog extends StatefulWidget {
 
 class _AgreementDialogState extends State<_AgreementDialog> {
   bool _agreed = false;
+  bool _showExitHint = false;
   TapGestureRecognizer? _openUserAgreement;
   TapGestureRecognizer? _openPrivacyPolicy;
 
@@ -84,9 +85,11 @@ class _AgreementDialogState extends State<_AgreementDialog> {
   void _exitApp() {
     if (Platform.isAndroid) {
       SystemNavigator.pop();
-    } else {
-      exit(0);
+      return;
     }
+    // iOS apps must never quit themselves (App Store Review Guideline 2.5.4),
+    // so surface the consequence inline and leave the dialog open instead.
+    setState(() => _showExitHint = true);
   }
 
   /// Renders the consent sentence with the two document titles as tappable
@@ -188,6 +191,16 @@ class _AgreementDialogState extends State<_AgreementDialog> {
                 ],
               ),
             ),
+            if (_showExitHint) ...[
+              const SizedBox(height: 8),
+              Text(
+                context.l10n.disagreeExitHint,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Theme.of(context).colorScheme.error,
+                ),
+              ),
+            ],
           ],
         ),
         actions: [

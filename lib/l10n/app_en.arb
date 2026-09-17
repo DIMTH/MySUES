@@ -30,6 +30,7 @@
   "privacyPolicy": "Privacy Policy",
   "agreementFraudWarning": "Important: this is a completely free, non-profit app. If you paid to obtain it, you have been scammed.",
   "disagreeAndExit": "Disagree and Exit",
+  "disagreeExitHint": "Agreement is required to use My SUES. If you do not agree, you can close the app yourself — no data will be kept.",
   "agreeAndContinue": "Agree and Continue",
   "agreementCheckboxLabel": "I have read and agree to the User Agreement and the Privacy Policy.",
   "legalChinesePrevails": "This English translation is provided for reference. If there is any discrepancy, the Chinese version prevails.",
