@@ -106,6 +106,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get disagreeAndExit => 'Disagree and Exit';
 
   @override
+  String get disagreeExitHint =>
+      'Agreement is required to use My SUES. If you do not agree, you can close the app yourself — no data will be kept.';
+
+  @override
   String get agreeAndContinue => 'Agree and Continue';
 
   @override

@@ -103,6 +103,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get disagreeAndExit => '不同意并退出';
 
   @override
+  String get disagreeExitHint => '使用三旋翼课程表需要先同意上述协议。如不同意，您可以自行关闭应用，我们不会保留任何数据。';
+
+  @override
   String get agreeAndContinue => '同意并继续';
 
   @override

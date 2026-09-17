@@ -53,7 +53,7 @@ If you want to run this project locally, please ensure you have the Flutter deve
 ## 📱 Platform Support
 
 - **Android**: Android 12.0+
-- **iOS**: iOS 14.0+
+- **iOS**: iOS 15.0+
 
 ## ⚠️ Disclaimer
 
