@@ -6,6 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mysues/l10n/l10n.dart';
 import 'package:mysues/models/student_info.dart';
+import 'package:mysues/utils/profile_preference_keys.dart';
 
 class ProfileEditScreen extends StatefulWidget {
   final String name;
@@ -40,7 +41,6 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
   static const String _majorPrefsKey = 'user_major';
   static const String _collegePrefsKey = 'user_college';
   static const String _classPrefsKey = 'user_class';
-  static const String _gradeOverridePrefsKey = 'user_grade_override';
 
   @override
   void initState() {
@@ -95,7 +95,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
     }
 
     setState(() {
-      _gradeOverride = prefs.getString(_gradeOverridePrefsKey);
+      _gradeOverride = prefs.getString(
+        ProfilePreferenceKeys.gradeOverride(widget.studentId),
+      );
     });
   }
 
@@ -331,12 +333,15 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
     if (selectedGrade == null) return;
 
     final prefs = await SharedPreferences.getInstance();
+    final gradeOverrideKey = ProfilePreferenceKeys.gradeOverride(
+      widget.studentId,
+    );
     if (selectedGrade == 'automatic') {
-      await prefs.remove(_gradeOverridePrefsKey);
+      await prefs.remove(gradeOverrideKey);
       if (!mounted) return;
       setState(() => _gradeOverride = null);
     } else {
-      await prefs.setString(_gradeOverridePrefsKey, selectedGrade);
+      await prefs.setString(gradeOverrideKey, selectedGrade);
       if (!mounted) return;
       setState(() => _gradeOverride = selectedGrade);
     }

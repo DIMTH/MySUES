@@ -34,6 +34,16 @@ void main() {
         0,
       );
     });
+
+    test('returns zero for a partial student ID', () {
+      expect(
+        StudentInfoHelper.calculateGradeNumber(
+          '021123',
+          now: DateTime(2026, 9, 1),
+        ),
+        0,
+      );
+    });
   });
 
   test('parseStudentId uses the supplied date for the grade label', () {

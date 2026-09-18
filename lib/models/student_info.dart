@@ -191,7 +191,7 @@ class StudentInfoHelper {
   /// student ID, while values above four represent graduation or an extended
   /// course of study.
   static int calculateGradeNumber(String id, {DateTime? now}) {
-    if (id.length < 6) return 0;
+    if (id.length < 9) return 0;
 
     final entranceYearSuffix = int.tryParse(id.substring(4, 6));
     if (entranceYearSuffix == null) return 0;

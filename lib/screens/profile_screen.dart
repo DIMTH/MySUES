@@ -15,6 +15,7 @@ import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'dart:math' as math;
 import 'package:mysues/widgets/material_you.dart';
 import 'package:mysues/l10n/l10n.dart';
+import 'package:mysues/utils/profile_preference_keys.dart';
 
 // Ensure Course is imported
 
@@ -45,7 +46,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   static const String _majorPrefsKey = 'user_major';
   static const String _collegePrefsKey = 'user_college';
   static const String _classPrefsKey = 'user_class';
-  static const String _gradeOverridePrefsKey = 'user_grade_override';
   static const String _nicknamePrefsKey = 'user_nickname';
   static const String _lastSyncTimeKey = 'last_sync_time_academic';
 
@@ -59,9 +59,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> _loadData() async {
     final prefs = await SharedPreferences.getInstance();
+    final studentId = prefs.getString(_studentIdKey);
 
     setState(() {
-      _studentId = prefs.getString(_studentIdKey);
+      _studentId = studentId;
       _nickname = prefs.getString(_nicknamePrefsKey);
       _name =
           _nickname; // Use nickname as name for now, or fetch separate 'real_name' if saved
@@ -73,7 +74,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _major = prefs.getString(_majorPrefsKey);
       _college = prefs.getString(_collegePrefsKey);
       _className = prefs.getString(_classPrefsKey);
-      _gradeOverride = prefs.getString(_gradeOverridePrefsKey);
+      _gradeOverride = studentId == null || studentId.isEmpty
+          ? null
+          : prefs.getString(ProfilePreferenceKeys.gradeOverride(studentId));
       _lastSyncTime = prefs.getString(_lastSyncTimeKey);
     });
 
