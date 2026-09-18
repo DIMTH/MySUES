@@ -37,6 +37,7 @@
   "privacyPolicy": "隐私政策",
   "agreementFraudWarning": "重要提示：本产品为公益性质的完全免费产品，若您是通过付费获取本产品，那您遭遇了诈骗。",
   "disagreeAndExit": "不同意并退出",
+  "disagreeExitHint": "使用三旋翼课程表需要先同意上述协议。如不同意，您可以自行关闭应用，我们不会保留任何数据。",
   "agreeAndContinue": "同意并继续",
   "agreementCheckboxLabel": "我已阅读并同意《用户协议》和《隐私政策》",
   "legalChinesePrevails": "英文译文仅供参考，如有歧义，以中文版本为准。",

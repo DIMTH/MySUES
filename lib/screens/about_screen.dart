@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:mysues/screens/about/user_agreement_screen.dart';
 import 'package:mysues/screens/about/privacy_policy_screen.dart';
@@ -21,6 +22,29 @@ class AboutScreen extends StatefulWidget {
 class _AboutScreenState extends State<AboutScreen> {
   int _tapCount = 0;
   DateTime? _lastTapTime;
+  String? _versionLabel;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadVersion();
+  }
+
+  Future<void> _loadVersion() async {
+    final info = await PackageInfo.fromPlatform();
+    if (!mounted) return;
+    setState(() => _versionLabel = _formatVersion(info));
+  }
+
+  /// Show the build number only when it adds information. If pubspec.yaml is
+  /// ever released without a `+build` suffix, iOS reports CFBundleVersion as
+  /// the version name itself, so printing both would read "1.2.1 (1.2.1)".
+  static String _formatVersion(PackageInfo info) {
+    final build = info.buildNumber;
+    return build.isEmpty || build == info.version
+        ? 'Version ${info.version}'
+        : 'Version ${info.version} ($build)';
+  }
 
   void _onIconTap() {
     final now = DateTime.now();
@@ -67,7 +91,7 @@ class _AboutScreenState extends State<AboutScreen> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Version 1.2.0-Build.4',
+                  _versionLabel ?? '',
                   style: TextStyle(color: Colors.grey[600]),
                 ),
                 const SizedBox(height: 8),

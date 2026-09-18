@@ -39,5 +39,20 @@ end
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
+
+    # Xcode 27 turned "pod deployment target below the minimum Xcode supports"
+    # from a warning into a hard error, which breaks `flutter build ipa` on
+    # every target in Pods.xcodeproj. Recent Flutter releases drop
+    # IPHONEOS_DEPLOYMENT_TARGET from such targets inside
+    # flutter_additional_ios_build_settings so they inherit Runner's value;
+    # pin it here as well so the archive works on any Flutter version.
+    # Only raise targets that sit below the app's minimum -- a pod that
+    # genuinely requires a *higher* version should still fail loudly.
+    target.build_configurations.each do |config|
+      current = config.build_settings['IPHONEOS_DEPLOYMENT_TARGET']
+      if current.nil? || current.to_f < 15.0
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0'
+      end
+    end
   end
 end
