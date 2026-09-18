@@ -15,6 +15,7 @@ import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'dart:math' as math;
 import 'package:mysues/widgets/material_you.dart';
 import 'package:mysues/l10n/l10n.dart';
+
 // Ensure Course is imported
 
 class ProfileScreen extends StatefulWidget {
@@ -35,6 +36,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String? _major;
   String? _college;
   String? _className;
+  String? _gradeOverride;
   String? _nickname;
   String? _lastSyncTime;
 
@@ -43,6 +45,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   static const String _majorPrefsKey = 'user_major';
   static const String _collegePrefsKey = 'user_college';
   static const String _classPrefsKey = 'user_class';
+  static const String _gradeOverridePrefsKey = 'user_grade_override';
   static const String _nicknamePrefsKey = 'user_nickname';
   static const String _lastSyncTimeKey = 'last_sync_time_academic';
 
@@ -70,6 +73,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _major = prefs.getString(_majorPrefsKey);
       _college = prefs.getString(_collegePrefsKey);
       _className = prefs.getString(_classPrefsKey);
+      _gradeOverride = prefs.getString(_gradeOverridePrefsKey);
       _lastSyncTime = prefs.getString(_lastSyncTimeKey);
     });
 
@@ -181,6 +185,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     // Reload data when returning
     _loadData();
+  }
+
+  String _gradeLabel(String grade) {
+    switch (grade) {
+      case '1':
+        return context.l10n.firstYear;
+      case '2':
+        return context.l10n.secondYear;
+      case '3':
+        return context.l10n.thirdYear;
+      case '4':
+        return context.l10n.fourthYear;
+      default:
+        return context.l10n.graduatedOrUnknown;
+    }
   }
 
   @override
@@ -335,7 +354,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 _buildCompactInfoItem(
                   context.l10n.year,
-                  info['grade'] ?? context.l10n.unknown,
+                  _gradeLabel(
+                    _gradeOverride ??
+                        StudentInfoHelper.calculateGradeNumber(
+                          _studentId!,
+                        ).toString(),
+                  ),
                 ),
               ],
             ),
